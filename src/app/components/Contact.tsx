@@ -1,16 +1,25 @@
 'use client'
 
-import { useState } from 'react'
+import { useState, ChangeEvent, FormEvent } from 'react'
+
+interface FormData {
+  name: string
+  email: string
+  message: string
+}
 
 export default function Contact() {
-  const [form, setForm] = useState({ name: '', email: '', message: '' })
+  const [form, setForm] = useState<FormData>({ name: '', email: '', message: '' })
   const [sent, setSent] = useState(false)
 
-  function onChange(e: any) {
-    setForm({ ...form, [e.target.name]: e.target.value })
+  // ✅ Type-safe onChange handler
+  function onChange(e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>) {
+    const { name, value } = e.target
+    setForm((prev) => ({ ...prev, [name]: value }))
   }
 
-  function onSubmit(e: any) {
+  // ✅ Type-safe onSubmit handler
+  function onSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault()
     setSent(true)
   }
