@@ -1,35 +1,35 @@
-'use client'
+"use client";
 
-import Link from 'next/link'
-import { useState, useEffect } from 'react'
-import { motion, AnimatePresence } from 'framer-motion'
+import Link from "next/link";
+import { useState, useEffect } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false)
-  const [scrolled, setScrolled] = useState(false)
+  const [open, setOpen] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50)
-    window.addEventListener('scroll', handleScroll)
-    return () => window.removeEventListener('scroll', handleScroll)
-  }, [])
+    const handleScroll = () => setScrolled(window.scrollY > 50);
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
 
   const navItems = [
-    { name: 'About', href: '#about' },
-    { name: 'Suites', href: '/Suites' }, // ✅ goes to Rates page now
-    { name: 'Gallery', href: '#gallery' },
-    { name: 'Contact', href: '#contact' },
-  ]
+    { name: "About", href: "#about" },
+    { name: "Suites", href: "/Suites" },
+    { name: "Gallery", href: "#gallery" },
+    { name: "Contact", href: "#contact" },
+  ];
 
   return (
     <motion.header
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: 'easeOut' }}
+      transition={{ duration: 0.6, ease: "easeOut" }}
       className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
         scrolled
-          ? 'bg-delacroixBlue shadow-lg border-b border-delacroixGold/20'
-          : 'bg-delacroixNavy'
+          ? "bg-delacroixBlue shadow-lg border-b border-delacroixGold/20"
+          : "bg-delacroixNavy"
       } text-delacroixCream`}
     >
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
@@ -57,13 +57,16 @@ export default function Navbar() {
             </motion.div>
           ))}
 
-          <motion.button
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.97 }}
-            className="bg-delacroixGold text-delacroixBlue px-5 py-2 rounded-md shadow-md hover:bg-delacroixGold/90 transition"
-          >
-            Book a Visit
-          </motion.button>
+          {/* ✅ Book Button (goes to /Book) */}
+          <Link href="/Book">
+            <motion.button
+              whileHover={{ scale: 1.05 }}
+              whileTap={{ scale: 0.97 }}
+              className="bg-delacroixGold text-delacroixBlue px-5 py-2 rounded-md shadow-md hover:bg-delacroixGold/90 transition"
+            >
+              Book a Visit
+            </motion.button>
+          </Link>
         </nav>
 
         {/* Mobile Menu Button */}
@@ -72,7 +75,7 @@ export default function Navbar() {
           onClick={() => setOpen(!open)}
           aria-label="menu"
         >
-          {open ? '✕' : '☰'}
+          {open ? "✕" : "☰"}
         </button>
       </div>
 
@@ -96,12 +99,16 @@ export default function Navbar() {
                 {item.name}
               </Link>
             ))}
-            <button className="w-full mt-2 bg-delacroixGold text-delacroixBlue px-4 py-3 rounded-md shadow hover:bg-delacroixGold/90 transition">
-              Book a Visit
-            </button>
+
+            {/* ✅ Mobile Book Button */}
+            <Link href="/Book" onClick={() => setOpen(false)}>
+              <button className="w-full mt-2 bg-delacroixGold text-delacroixBlue px-4 py-3 rounded-md shadow hover:bg-delacroixGold/90 transition">
+                Book a Visit
+              </button>
+            </Link>
           </motion.div>
         )}
       </AnimatePresence>
     </motion.header>
-  )
+  );
 }
