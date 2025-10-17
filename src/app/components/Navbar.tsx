@@ -1,68 +1,72 @@
-"use client";
+'use client'
 
-import Link from "next/link";
-import { useState, useEffect } from "react";
-import { motion, AnimatePresence } from "framer-motion";
+import Link from 'next/link'
+import { useState, useEffect } from 'react'
+import { motion, AnimatePresence } from 'framer-motion'
 
 export default function Navbar() {
-  const [open, setOpen] = useState(false);
-  const [scrolled, setScrolled] = useState(false);
+  const [open, setOpen] = useState(false)
+  const [scrolled, setScrolled] = useState(false)
 
   useEffect(() => {
-    const handleScroll = () => setScrolled(window.scrollY > 50);
-    window.addEventListener("scroll", handleScroll);
-    return () => window.removeEventListener("scroll", handleScroll);
-  }, []);
+    const handleScroll = () => setScrolled(window.scrollY > 50)
+    window.addEventListener('scroll', handleScroll)
+    return () => window.removeEventListener('scroll', handleScroll)
+  }, [])
 
   const navItems = [
-    { name: "About", href: "#about" },
-    { name: "Suites", href: "/Suites" },
-    { name: "Gallery", href: "#gallery" },
-    { name: "Contact", href: "#contact" },
-  ];
+    { name: 'About', href: '#about' },
+    { name: 'Suites', href: '/Suites' },
+    { name: 'Gallery', href: '/Gallery' },
+    { name: 'Contact', href: '#contact' },
+  ]
 
   return (
     <motion.header
       initial={{ y: -50, opacity: 0 }}
       animate={{ y: 0, opacity: 1 }}
-      transition={{ duration: 0.6, ease: "easeOut" }}
-      className={`fixed top-0 left-0 w-full z-50 transition-all duration-500 ${
+      transition={{ duration: 0.6, ease: 'easeOut' }}
+      className={`fixed top-0 left-0 w-full z-50 backdrop-blur-md transition-all duration-500 ${
         scrolled
-          ? "bg-delacroixBlue shadow-lg border-b border-delacroixGold/20"
-          : "bg-delacroixNavy"
-      } text-delacroixCream`}
+          ? 'bg-[#0e1525e6] border-b border-[#d4af37]/30 shadow-[0_4px_20px_rgba(0,0,0,0.4)]'
+          : 'bg-transparent'
+      }`}
     >
-      <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
+      <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between text-white">
         {/* Logo */}
-        <motion.div whileHover={{ scale: 1.05 }}>
+        <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
           <Link
             href="/"
-            className="text-2xl font-bold tracking-wider hover:text-delacroixGold transition-colors"
-          >
+           className="block text-3xl font-serif tracking-wider bg-gradient-to-r from-[#d4af37] to-[#f1e4b3] bg-clip-text text-transparent drop-shadow-md leading-none m-0 p-0"
+  >
             Delacroix
           </Link>
         </motion.div>
 
         {/* Desktop Nav */}
-        <nav className="hidden md:flex gap-8 items-center font-medium tracking-wide">
+        <nav className="hidden md:flex gap-12 items-center font-medium tracking-wide">
           {navItems.map((item) => (
             <motion.div key={item.name} whileHover={{ y: -2 }}>
               <Link
                 href={item.href}
-                className="relative group transition-colors duration-300"
+                className="relative group transition-colors duration-300 text-gray-200 hover:text-[#f1e4b3] text-lg"
               >
                 {item.name}
-                <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-delacroixGold transition-all duration-300 group-hover:w-full"></span>
+                {/* Gold underline */}
+                <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-gradient-to-r from-[#d4af37] to-[#f1e4b3] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </motion.div>
           ))}
 
-          {/* ✅ Book Button (goes to /Book) */}
+          {/* Book Button */}
           <Link href="/Book">
             <motion.button
-              whileHover={{ scale: 1.05 }}
+              whileHover={{
+                scale: 1.05,
+                boxShadow: '0 0 15px rgba(212,175,55,0.5)',
+              }}
               whileTap={{ scale: 0.97 }}
-              className="bg-delacroixGold text-delacroixBlue px-5 py-2 rounded-md shadow-md hover:bg-delacroixGold/90 transition"
+              className="relative bg-gradient-to-r from-[#d4af37] to-[#f1e4b3] text-[#0e1525] px-7 py-2.5 rounded-full font-semibold tracking-wide transition duration-300 shadow-[0_0_10px_rgba(212,175,55,0.3)] hover:shadow-[0_0_25px_rgba(212,175,55,0.5)]"
             >
               Book a Visit
             </motion.button>
@@ -71,11 +75,11 @@ export default function Navbar() {
 
         {/* Mobile Menu Button */}
         <button
-          className="md:hidden text-2xl focus:outline-none"
+          className="md:hidden text-3xl focus:outline-none"
           onClick={() => setOpen(!open)}
           aria-label="menu"
         >
-          {open ? "✕" : "☰"}
+          {open ? '✕' : '☰'}
         </button>
       </div>
 
@@ -83,26 +87,26 @@ export default function Navbar() {
       <AnimatePresence>
         {open && (
           <motion.div
-            initial={{ opacity: 0, y: -30 }}
+            initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            exit={{ opacity: 0, y: -30 }}
+            exit={{ opacity: 0, y: -20 }}
             transition={{ duration: 0.35 }}
-            className="md:hidden bg-delacroixBlue px-6 py-6 space-y-4 border-t border-delacroixGold/20"
+            className="md:hidden bg-[#0e1525f5] px-6 py-6 space-y-5 border-t border-[#d4af37]/20 text-center"
           >
             {navItems.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
                 onClick={() => setOpen(false)}
-                className="block py-2 text-lg font-medium hover:text-delacroixGold transition"
+                className="block py-2 text-lg font-medium text-gray-200 hover:text-[#f1e4b3] transition relative group"
               >
                 {item.name}
+                <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-gradient-to-r from-[#d4af37] to-[#f1e4b3] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             ))}
 
-            {/* ✅ Mobile Book Button */}
             <Link href="/Book" onClick={() => setOpen(false)}>
-              <button className="w-full mt-2 bg-delacroixGold text-delacroixBlue px-4 py-3 rounded-md shadow hover:bg-delacroixGold/90 transition">
+              <button className="w-full mt-3 bg-gradient-to-r from-[#d4af37] to-[#f1e4b3] text-[#0e1525] px-5 py-3 rounded-full font-semibold shadow-[0_0_15px_rgba(212,175,55,0.4)] hover:shadow-[0_0_25px_rgba(212,175,55,0.6)] transition">
                 Book a Visit
               </button>
             </Link>
@@ -110,5 +114,5 @@ export default function Navbar() {
         )}
       </AnimatePresence>
     </motion.header>
-  );
+  )
 }

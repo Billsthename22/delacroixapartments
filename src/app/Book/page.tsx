@@ -3,16 +3,15 @@
 import React, { useMemo, useState } from "react";
 
 // BookNowPage.tsx
-// Simple Tailwind + React booking page that builds a prefilled WhatsApp message
-// Replace WHATSAPP_NUMBER with your destination number (in international format, no + or spaces, e.g. 2348012345678)
+// Updated with real Delacroix Apartment rates
 
-const WHATSAPP_NUMBER = "2349155581053"; // <-- replace with the hotel's WhatsApp number
+const WHATSAPP_NUMBER = "2349155581053"; // WhatsApp number
 
 const SUITES = [
-  { id: "Ruby", name: "Ruby Suite", desc: "2–3 bedroom, sea view", price: "₦120,000/night" },
-  { id: "Emerald", name: "Emerald Suite", desc: "1 bedroom, king bed", price: "₦80,000/night" },
-  { id: "Pearl", name: "Pearl Suite", desc: "Studio suite, city view", price: "₦60,000/night" },
-  { id: "Petra", name: "Petra Suite", desc: "Studio suite, city view", price: "₦60,000/night" },
+  { id: "Ruby", name: "Ruby Suite", desc: "2–3 Bedroom", price: "₦150,000 (2BR) / ₦200,000 (3BR)" },
+  { id: "Pearl", name: "Pearl Suite", desc: "2–3 Bedroom", price: "₦150,000 (2BR) / ₦200,000 (3BR)" },
+  { id: "Emerald", name: "Emerald Suite", desc: "Single Room", price: "₦50,000/night" },
+  { id: "Petra", name: "Petra Villa", desc: "6 Bedroom (Entire Building)", price: "₦350,000/night" },
 ];
 
 function formatDate(d?: string) {
@@ -56,8 +55,9 @@ export default function BookNowPage() {
     const checkOutText = checkOut ? formatDate(checkOut) : "Not set";
 
     const messageLines = [
-      `Hello, I'd like to book a suite.`,
+      `Hello, I'd like to book a suite at Delacroix Apartments.`,
       `Suite: ${selectedSuiteData.name}`,
+      `Details: ${selectedSuiteData.desc} — ${selectedSuiteData.price}`,
       `Check-in: ${checkInText}`,
       `Check-out: ${checkOutText}`,
       `Nights: ${days.length > 0 ? days.length : "—"}`,
@@ -65,7 +65,6 @@ export default function BookNowPage() {
     ];
 
     if (notes.trim()) messageLines.push(`Notes: ${notes.trim()}`);
-
     messageLines.push("Please confirm availability and next steps.");
 
     const encoded = encodeURIComponent(messageLines.join("\n"));
@@ -90,7 +89,7 @@ export default function BookNowPage() {
           <div>
             <h1 className="text-2xl font-bold text-[color:var(--color-delacroixBlue)]">Book Now</h1>
             <p className="text-sm text-[color:var(--color-delacroixBlue)]/70">
-              Choose a suite, pick dates — message will open in WhatsApp.
+              Choose a suite, pick dates — your booking message will open in WhatsApp.
             </p>
           </div>
           <div className="text-sm text-[color:var(--color-delacroixBlue)]/60">
@@ -222,7 +221,9 @@ export default function BookNowPage() {
 
                 <button
                   onClick={() => {
-                    const summary = `Suite: ${selectedSuiteData.name}\nCheck-in: ${formatDate(checkIn)}\nCheck-out: ${formatDate(checkOut)}\nGuests: ${guests}`;
+                    const summary = `Suite: ${selectedSuiteData.name}\nCheck-in: ${formatDate(
+                      checkIn
+                    )}\nCheck-out: ${formatDate(checkOut)}\nGuests: ${guests}`;
                     navigator.clipboard?.writeText(summary);
                     alert("Summary copied to clipboard");
                   }}
@@ -242,7 +243,11 @@ export default function BookNowPage() {
         <footer className="mt-6 text-sm text-[color:var(--color-delacroixBlue)]/70">
           <div>Auto message preview:</div>
           <pre className="mt-2 bg-[color:var(--color-delacroixBlue)]/5 p-3 rounded-md text-xs whitespace-pre-wrap border border-[color:var(--color-delacroixBlue)]/10">
-            {`Suite: ${selectedSuiteData.name}\nCheck-in: ${formatDate(checkIn)}\nCheck-out: ${formatDate(checkOut)}\nNights: ${days.length || "—"}\nGuests: ${guests}${notes ? `\nNotes: ${notes}` : ""}`}
+            {`Suite: ${selectedSuiteData.name}\nCheck-in: ${formatDate(checkIn)}\nCheck-out: ${formatDate(
+              checkOut
+            )}\nNights: ${days.length || "—"}\nGuests: ${guests}${
+              notes ? `\nNotes: ${notes}` : ""
+            }`}
           </pre>
         </footer>
       </div>
