@@ -2,16 +2,47 @@
 
 import React, { useMemo, useState } from "react";
 
-// BookNowPage.tsx
-// Updated with real Delacroix Apartment rates
+const WHATSAPP_NUMBER = "2349155581053";
 
-const WHATSAPP_NUMBER = "2349155581053"; // WhatsApp number
+// ✅ Flexible typing for suite options
+type SuiteOption = string;
+type Suite = {
+  id: string;
+  name: string;
+  desc: string;
+  options: SuiteOption[];
+  prices: Record<string, number>; // <-- allows varying keys
+};
 
-const SUITES = [
-  { id: "Ruby", name: "Ruby Suite", desc: "2–3 Bedroom", price: "₦150,000 (2BR) / ₦200,000 (3BR)" },
-  { id: "Pearl", name: "Pearl Suite", desc: "2–3 Bedroom", price: "₦150,000 (2BR) / ₦200,000 (3BR)" },
-  { id: "Emerald", name: "Emerald Suite", desc: "Single Room", price: "₦50,000/night" },
-  { id: "Petra", name: "Petra Villa", desc: "6 Bedroom (Entire Building)", price: "₦350,000/night" },
+const SUITES: Suite[] = [
+  {
+    id: "Ruby",
+    name: "Ruby Suite",
+    desc: "2–3 Bedroom",
+    options: ["2 Bedroom", "3 Bedroom"],
+    prices: { "2 Bedroom": 150000, "3 Bedroom": 200000 },
+  },
+  {
+    id: "Pearl",
+    name: "Pearl Suite",
+    desc: "2–3 Bedroom",
+    options: ["2 Bedroom", "3 Bedroom"],
+    prices: { "2 Bedroom": 150000, "3 Bedroom": 200000 },
+  },
+  {
+    id: "Emerald",
+    name: "Emerald Suite",
+    desc: "Single Room",
+    options: ["Standard"],
+    prices: { Standard: 50000 },
+  },
+  {
+    id: "Petra",
+    name: "Petra Villa",
+    desc: "6 Bedroom (Entire Building)",
+    options: ["Entire Villa"],
+    prices: { "Entire Villa": 350000 },
+  },
 ];
 
 function formatDate(d?: string) {
@@ -38,6 +69,7 @@ function getDatesBetween(start: string, end: string) {
 
 export default function BookNowPage() {
   const [selectedSuite, setSelectedSuite] = useState(SUITES[0].id);
+  const [selectedOption, setSelectedOption] = useState(SUITES[0].options[0]);
   const [checkIn, setCheckIn] = useState("");
   const [checkOut, setCheckOut] = useState("");
   const [guests, setGuests] = useState(2);
@@ -49,6 +81,7 @@ export default function BookNowPage() {
   );
 
   const days = useMemo(() => getDatesBetween(checkIn, checkOut), [checkIn, checkOut]);
+  const selectedPrice = selectedSuiteData.prices[selectedOption] || 0;
 
   const buildWhatsAppUrl = () => {
     const checkInText = checkIn ? formatDate(checkIn) : "Not set";
@@ -57,7 +90,8 @@ export default function BookNowPage() {
     const messageLines = [
       `Hello, I'd like to book a suite at Delacroix Apartments.`,
       `Suite: ${selectedSuiteData.name}`,
-      `Details: ${selectedSuiteData.desc} — ${selectedSuiteData.price}`,
+      `Type: ${selectedOption}`,
+      `Rate: ₦${selectedPrice.toLocaleString()} per night`,
       `Check-in: ${checkInText}`,
       `Check-out: ${checkOutText}`,
       `Nights: ${days.length > 0 ? days.length : "—"}`,
@@ -101,7 +135,7 @@ export default function BookNowPage() {
         </header>
 
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          {/* SUITE PICKER */}
+          {/* Suite Picker */}
           <div className="md:col-span-1">
             <h2 className="text-lg font-semibold mb-3 text-[color:var(--color-delacroixBlue)]">
               Select suite
@@ -121,17 +155,36 @@ export default function BookNowPage() {
                     name="suite"
                     value={s.id}
                     checked={s.id === selectedSuite}
-                    onChange={() => setSelectedSuite(s.id)}
+                    onChange={() => {
+                      setSelectedSuite(s.id);
+                      setSelectedOption(s.options[0]);
+                    }}
                     className="form-radio h-4 w-4 text-[color:var(--color-delacroixGold)]"
                   />
                   <div>
                     <div className="font-medium">{s.name}</div>
                     <div className="text-xs text-[color:var(--color-delacroixBlue)]/70">
-                      {s.desc} • {s.price}
+                      {s.desc}
                     </div>
                   </div>
                 </label>
               ))}
+            </div>
+
+            {/* Room Type Dropdown */}
+            <div className="mt-6">
+              <h3 className="text-sm font-semibold mb-2">Select Room Type</h3>
+              <select
+                value={selectedOption}
+                onChange={(e) => setSelectedOption(e.target.value)}
+                className="w-full rounded-md bg-[color:var(--color-delacroixBlue)]/5 p-2 border border-[color:var(--color-delacroixBlue)]/20"
+              >
+                {selectedSuiteData.options.map((opt) => (
+                  <option key={opt} value={opt}>
+                    {opt} — ₦{selectedSuiteData.prices[opt].toLocaleString()}/night
+                  </option>
+                ))}
+              </select>
             </div>
 
             <div className="mt-6">
@@ -157,7 +210,7 @@ export default function BookNowPage() {
             </div>
           </div>
 
-          {/* DATE PICKER */}
+          {/* Date Picker */}
           <div className="md:col-span-2">
             <h2 className="text-lg font-semibold mb-3 text-[color:var(--color-delacroixBlue)]">
               Pick dates
@@ -221,7 +274,7 @@ export default function BookNowPage() {
 
                 <button
                   onClick={() => {
-                    const summary = `Suite: ${selectedSuiteData.name}\nCheck-in: ${formatDate(
+                    const summary = `Suite: ${selectedSuiteData.name} (${selectedOption})\nCheck-in: ${formatDate(
                       checkIn
                     )}\nCheck-out: ${formatDate(checkOut)}\nGuests: ${guests}`;
                     navigator.clipboard?.writeText(summary);
@@ -243,7 +296,7 @@ export default function BookNowPage() {
         <footer className="mt-6 text-sm text-[color:var(--color-delacroixBlue)]/70">
           <div>Auto message preview:</div>
           <pre className="mt-2 bg-[color:var(--color-delacroixBlue)]/5 p-3 rounded-md text-xs whitespace-pre-wrap border border-[color:var(--color-delacroixBlue)]/10">
-            {`Suite: ${selectedSuiteData.name}\nCheck-in: ${formatDate(checkIn)}\nCheck-out: ${formatDate(
+            {`Suite: ${selectedSuiteData.name}\nType: ${selectedOption}\nRate: ₦${selectedPrice.toLocaleString()}/night\nCheck-in: ${formatDate(checkIn)}\nCheck-out: ${formatDate(
               checkOut
             )}\nNights: ${days.length || "—"}\nGuests: ${guests}${
               notes ? `\nNotes: ${notes}` : ""

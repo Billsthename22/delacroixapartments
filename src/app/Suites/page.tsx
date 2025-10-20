@@ -3,110 +3,110 @@
 import { motion } from 'framer-motion'
 import Image from 'next/image'
 import Link from 'next/link'
-import Navbar from '../components/Navbar'
+import Navbar from '@/app/components/Navbar'
+import Footer from '@/app/components/Footer'
+
 const suites = [
   {
     name: 'Ruby Suite',
     slug: 'ruby',
-    image: '/ruby-suite.jpg',
-    desc: 'Luxurious 2–3 bedroom suite with refined design and comfort.',
-    features: ['3 Bedrooms', 'PS5', 'Private Balcony', 'Modern Kitchen'],
+    image: '/delacroix/masterbedroom.jpeg',
+    desc: 'A blend of luxury and sophistication in 2 or 3 bedrooms with premium finishes.',
+    priceRange: '₦150,000 – ₦200,000 / night',
   },
   {
     name: 'Pearl Suite',
     slug: 'pearl',
-    image: '/pearl-suite.jpg',
-    desc: 'Elegant design with spacious interiors and city views.',
-    features: ['2 Bedrooms', 'Smart TV', 'Lounge Area', 'Free WiFi'],
+    image: '/delacroix/emerald.jpg',
+    desc: 'Elegant and private, perfect for guests seeking peace and refined comfort.',
+    priceRange: '₦150,000 – ₦200,000 / night',
   },
   {
     name: 'Emerald Suite',
     slug: 'emerald',
-    image: '/emerald-suite.jpg',
-    desc: 'Compact and cozy, ideal for short stays.',
-    features: ['1 Bedroom', 'Air Conditioning', 'Furnished', 'Mini Bar'],
+    image: '/delacroix/bedroom.jpg',
+    desc: 'A cozy single-room haven for individuals or couples seeking comfort.',
+    priceRange: '₦50,000 / night',
   },
   {
     name: 'Petra Villa',
     slug: 'petra',
-    image: '/petra-villa.jpg',
-    desc: '6-bedroom villa designed for full privacy and comfort.',
-    features: ['6 Bedrooms', 'Private Pool', 'Outdoor Lounge', 'Kitchen'],
+    image: '/delacroix/petra.jpg',
+    desc: 'Our ultimate 6-bedroom villa experience for families or group retreats.',
+    priceRange: '₦350,000 / night',
   },
 ]
 
 export default function SuitesPage() {
   return (
-    <main className="bg-gradient-to-b from-[#08172C] to-[#0A1D37] min-h-screen text-delacroixCream">
-      {/* Header */}
-      <section className="text-center py-24">
-        <motion.h1
-          initial={{ opacity: 0, y: 30 }}
+    <main className="bg-gradient-to-b from-[#0A1D37] to-[#08172C] min-h-screen text-delacroixCream">
+      <Navbar />
+      {/* Hero Section */}
+      <section className="relative text-center py-20 bg-[url('/gallery/lounge.jpg')] bg-cover bg-center">
+        <div className="absolute inset-0 bg-black/60" />
+        <motion.div
+          initial={{ opacity: 0, y: 40 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
-          className="text-5xl font-bold text-delacroixGold tracking-wide"
+          className="relative z-10 px-6"
         >
-          Our Luxury Suites
-        </motion.h1>
-        <div className="mt-3 w-24 h-[3px] bg-delacroixGold mx-auto rounded-full" />
-        <p className="mt-6 text-delacroixCream/80 max-w-2xl mx-auto text-lg leading-relaxed">
-          Discover exclusive living spaces designed for elegance, comfort, and tranquility.
-        </p>
+          <h1 className="text-5xl md:text-6xl font-bold text-delacroixGold mb-4">
+            Our Luxury Suites
+          </h1>
+          <p className="max-w-2xl mx-auto text-delacroixCream/80">
+            Discover comfort and elegance in every corner of Delacroix Apartments.  
+            Choose your perfect suite below.
+          </p>
+        </motion.div>
       </section>
 
       {/* Suites Grid */}
-      <section className="max-w-7xl mx-auto px-6 py-16 grid sm:grid-cols-2 lg:grid-cols-3 gap-12 overflow-hidden">
-        {suites.map((suite, index) => (
+      <section className="max-w-7xl mx-auto px-6 py-20 grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-10">
+        {suites.map((suite, i) => (
           <motion.div
-            key={suite.name}
-            initial={{ opacity: 0, y: 50 }}
+            key={suite.slug}
+            initial={{ opacity: 0, y: 40 }}
             whileInView={{ opacity: 1, y: 0 }}
-            transition={{ delay: index * 0.15 }}
+            transition={{ duration: 0.6, delay: i * 0.1 }}
             viewport={{ once: true }}
-            className="relative bg-delacroixCream rounded-3xl overflow-hidden shadow-xl hover:shadow-[0_0_20px_rgba(212,175,55,0.3)] transition-all duration-500 transform hover:-translate-y-2"
+            className="group relative rounded-2xl overflow-hidden shadow-xl hover:shadow-2xl transition-all duration-500"
           >
-            <div className="relative w-full h-64 md:h-72">
+            {/* Image Section */}
+            <div className="relative h-72 w-full">
               <Image
                 src={suite.image}
                 alt={suite.name}
                 fill
-                className="object-cover"
+                sizes="(max-width: 768px) 100vw, 33vw"
+                priority={i === 0}
+                className="object-cover group-hover:scale-110 transition-transform duration-700"
               />
-              {/* Hover Overlay */}
-              <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-0 hover:opacity-100 transition-all duration-500 flex items-end justify-center pb-6">
-                <Link
-                  href={`/rates/${suite.slug}`}
-                  className="px-6 py-3 bg-delacroixGold text-delacroixBlue font-semibold rounded-md hover:scale-105 transition-transform shadow-lg"
-                >
-                  View Suite
-                </Link>
-              </div>
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 via-black/40 to-transparent" />
             </div>
 
-            <div className="p-6 text-delacroixBlue">
-              <h3 className="text-2xl font-bold text-delacroixBlue mb-2">
+            {/* Card Overlay Content */}
+            <div className="absolute inset-0 flex flex-col justify-end p-6 text-delacroixCream">
+              <h2 className="text-2xl font-bold text-delacroixGold mb-2">
                 {suite.name}
-              </h3>
-              <p className="text-gray-700 mb-4 leading-relaxed">{suite.desc}</p>
-
-              <ul className="space-y-1 text-sm text-delacroixBlue/80">
-                {suite.features.map((f, i) => (
-                  <li key={i}>• {f}</li>
-                ))}
-              </ul>
-
-              <div className="mt-6">
-                <Link
-                  href={`/rates/${suite.slug}`}
-                  className="inline-block px-6 py-3 border-2 border-delacroixGold text-delacroixBlue rounded-md font-semibold hover:bg-delacroixGold hover:text-delacroixBlue transition-all duration-300"
-                >
-                  Explore Details
-                </Link>
-              </div>
+              </h2>
+              <p className="text-sm text-delacroixCream/80 mb-3">
+                {suite.desc}
+              </p>
+              <p className="text-delacroixGold font-semibold mb-4">
+                {suite.priceRange}
+              </p>
+              <Link
+                href={`/suites/${suite.slug}`}
+                className="inline-block bg-delacroixGold text-delacroixBlue font-semibold px-6 py-2 rounded-md hover:scale-105 transition-transform"
+              >
+                View Suite
+              </Link>
             </div>
           </motion.div>
         ))}
       </section>
+
+      <Footer />
     </main>
   )
 }

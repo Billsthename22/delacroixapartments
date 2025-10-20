@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { useState, useEffect } from 'react'
 import { motion, AnimatePresence } from 'framer-motion'
 
@@ -16,7 +17,7 @@ export default function Navbar() {
 
   const navItems = [
     { name: 'About', href: '#about' },
-    { name: 'Suites', href: '/Suites' },
+    { name: 'Suites', href: '/suites' },
     { name: 'Gallery', href: '/Gallery' },
     { name: 'Contact', href: '#contact' },
   ]
@@ -34,12 +35,19 @@ export default function Navbar() {
     >
       <div className="max-w-7xl mx-auto px-6 md:px-10 py-5 flex items-center justify-between text-white">
         {/* Logo */}
-        <motion.div whileHover={{ scale: 1.05 }} className="flex-shrink-0">
-          <Link
-            href="/"
-           className="block text-3xl font-serif tracking-wider bg-gradient-to-r from-[#d4af37] to-[#f1e4b3] bg-clip-text text-transparent drop-shadow-md leading-none m-0 p-0"
-  >
-            Delacroix
+        <motion.div whileHover={{ scale: 1.05 }} className="flex items-center gap-3 flex-shrink-0">
+          <Link href="/" className="flex items-center gap-2">
+            {/* Replace /logo.png with your actual logo path */}
+            <Image
+              src="/delacroix.png"
+              alt="Delacroix Logo"
+              width={40}
+              height={40}
+              className="object-contain"
+            />
+            <span className="block text-3xl font-serif tracking-wider bg-gradient-to-r from-[#d4af37] to-[#f1e4b3] bg-clip-text text-transparent drop-shadow-md leading-none">
+              Delacroix
+            </span>
           </Link>
         </motion.div>
 
@@ -52,7 +60,6 @@ export default function Navbar() {
                 className="relative group transition-colors duration-300 text-gray-200 hover:text-[#f1e4b3] text-lg"
               >
                 {item.name}
-                {/* Gold underline */}
                 <span className="absolute left-0 -bottom-1 h-[2px] w-0 bg-gradient-to-r from-[#d4af37] to-[#f1e4b3] transition-all duration-300 group-hover:w-full"></span>
               </Link>
             </motion.div>

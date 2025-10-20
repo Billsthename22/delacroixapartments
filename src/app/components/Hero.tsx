@@ -1,22 +1,24 @@
-'use client'
-import { motion } from 'framer-motion'
-import { useState, useEffect } from 'react'
+"use client";
+
+import { motion } from "framer-motion";
+import { useState, useEffect } from "react";
+import Link from "next/link";
 
 export default function Hero() {
   const images = [
-    '/delacroix/bedroom.jpg',
-    '/delacroix/outside.jpg',
-   '/delacroix/swimmingpool.jpg'
-  ]
+    "/delacroix/bedroom.jpg",
+    "/delacroix/outside.jpg",
+    "/delacroix/swimmingpool.jpg",
+  ];
 
-  const [current, setCurrent] = useState(0)
+  const [current, setCurrent] = useState(0);
 
   useEffect(() => {
     const interval = setInterval(() => {
-      setCurrent((prev) => (prev + 1) % images.length)
-    }, 5000) // changes every 5 seconds
-    return () => clearInterval(interval)
-  }, [images.length])
+      setCurrent((prev) => (prev + 1) % images.length);
+    }, 5000); // changes every 5 seconds
+    return () => clearInterval(interval);
+  }, [images.length]);
 
   return (
     <section className="relative overflow-hidden">
@@ -42,7 +44,7 @@ export default function Hero() {
             <motion.h1
               initial={{ opacity: 0, y: 36 }}
               animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.8, ease: 'easeOut' }}
+              transition={{ duration: 0.8, ease: "easeOut" }}
               className="text-4xl md:text-6xl font-serif font-bold leading-tight"
             >
               Delacroix Apartments
@@ -57,7 +59,8 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.15 }}
               className="mt-6 text-lg md:text-xl max-w-xl font-light text-delacroixCream/95"
             >
-              Luxury living in the heart of the city — modern finishes, premium amenities, and unparalleled comfort.
+              Luxury living in the heart of the city — modern finishes, premium
+              amenities, and unparalleled comfort.
             </motion.p>
 
             <motion.div
@@ -66,23 +69,23 @@ export default function Hero() {
               transition={{ duration: 0.8, delay: 0.35 }}
               className="mt-8 flex gap-4 flex-wrap"
             >
-              <a
-                href="#gallery"
+              <Link
+                href="/suites"
                 className="px-5 py-3 border border-delacroixCream/80 text-delacroixCream rounded-md hover:bg-delacroixCream hover:text-delacroixBlue transition-colors duration-200"
               >
                 View Listings
-              </a>
+              </Link>
 
-              <a
+              <Link
                 href="#contact"
                 className="px-5 py-3 bg-delacroixGold text-delacroixBlue font-medium rounded-md shadow-md hover:bg-delacroixGold/90 transition-colors duration-200"
               >
                 Book a Visit
-              </a>
+              </Link>
             </motion.div>
           </div>
         </div>
       </div>
     </section>
-  )
+  );
 }
