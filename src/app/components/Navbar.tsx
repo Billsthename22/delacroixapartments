@@ -19,7 +19,7 @@ export default function Navbar() {
     { name: 'About', href: '#about' },
     { name: 'Suites', href: '/Suites' },
     { name: 'Gallery', href: '/Gallery' },
-    { name: 'Contact', href: '#contact' },
+    { name: 'Contact', href: '/Contact' },
   ]
 
   return (
