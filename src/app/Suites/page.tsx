@@ -96,7 +96,7 @@ export default function SuitesPage() {
                 {suite.priceRange}
               </p>
               <Link
-                href={`/suites/${suite.slug}`}
+                href={`/Suites/${suite.slug}`}
                 className="inline-block bg-delacroixGold text-delacroixBlue font-semibold px-6 py-2 rounded-md hover:scale-105 transition-transform"
               >
                 View Suite

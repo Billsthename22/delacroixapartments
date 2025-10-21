@@ -143,7 +143,7 @@ const handleBook = () => {
           {/* Buttons */}
           <div className="mt-16 flex justify-center gap-4">
             <Link
-              href="/suites"
+              href="/Suites"
               className="px-8 py-3 border-2 border-delacroixGold text-delacroixGold rounded-md font-semibold hover:bg-delacroixGold hover:text-delacroixBlue transition-all duration-300"
             >
               ← Back to Suites
